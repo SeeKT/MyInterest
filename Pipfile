@@ -12,6 +12,8 @@ sympy = "*"
 seaborn = "*"
 jupyter = "*"
 ipykernel = "*"
+statsmodels = "*"
+sklearn = "*"
 
 [dev-packages]
 
