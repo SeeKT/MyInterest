@@ -16,6 +16,7 @@ statsmodels = "*"
 sklearn = "*"
 pulp = "*"
 networkx = "*"
+ipython = "*"
 
 [dev-packages]
 
