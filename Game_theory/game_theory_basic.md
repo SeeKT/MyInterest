@@ -4,7 +4,7 @@ theme:
 footer: "Kosuke Toda (@SeeKT)"
 ---
 <!-- paginate: true -->
-# ゲーム理論 (基本)
+# 非協力ゲーム理論 (基本)
 - 参考文献
     - J. W. Weibull, Evolutionary game theory, MIT press, 1997.
 ---
@@ -67,18 +67,15 @@ $$
 - $\Delta_i$は単位ベクトル$e_{m_i}^j$を頂点とする$m_i - 1$次元単位単体．
 
 ---
+## 混合戦略の集合
 
-![bg 40%](./fig/graph.svg)
+![bg 50% left](./fig/graph.svg)
 
-$
-S_i = \{1, 2\}
-$
-$
-\Delta_i = \{(x_i^1, 1 - x_i^1)^{\mathrm{T}}\}
-$
-$
-(0 \leq x_i^1 \leq 1)
-$
+$S_i = \{1, 2\}$のとき，
+$$
+\Delta_i = \{(x_i^1, 1 - x_i^1)^{\mathrm{T}} \, | \, 0 \leq x_i^1 \leq 1\}
+$$
+である(左図)．
 
 ---
 ## 混合戦略
@@ -132,4 +129,302 @@ $$
 と書ける．ただし，$A, B$はそれぞれエージェント1, 2の利得行列．
 
 ---
+## 最適反応 (純粋戦略最適反応)
+$s_i^{*} \in \beta_i(x)$を$x_{-i}$に対する純粋戦略最適反応という．ただし，純粋戦略最適反応対応$\beta_i: \Theta \to 2^{S_i}$は， 
+$$
+\beta_i(x) = \left\{j \in S_i \, | \, \forall k \in S_i, \; u_i(e_{m_i}^j, x_{-i}) \geq u_i(e_{m_i}^k, x_{-i}) \right\}
+$$
+で定義される．
+
+- 他のエージェントの混合戦略を固定した下で，自身の期待利得が最大になるような純粋戦略
+
+---
+## 最適反応 (混合戦略最適反応)
+
+$x_i^{*} \in \tilde{\beta}(x)$を$x_{-i}$に対する混合戦略最適反応という．ただし，混合戦略最適反応対応$\tilde{\beta}: \Theta \to 2^{\Delta_i}$は
+$$
+\tilde{\beta}(x) = \{x_i^{*} \in \Delta_i \, | \, \forall x_i^{\prime} \in \Delta_i, \; u_i(x_i^{*}, x_{-i}) \geq u_i(x_i^{\prime}, x_{-i}) \} \\
+= \{x_i^{*} \in \Delta_i \, | \, \forall j \notin \beta_i(x), \; {x_i^j}^{*} = 0 \} \\
+= \{x_i^{*} \in \Delta_i \, | \, C(x_i^{*}) \subseteq \beta_i(x)  \}
+$$
+で定義される．
+
+- 他のエージェントの混合戦略を固定した下で，期待利得が最大になるような混合戦略
+- 純粋戦略最適反応ではない行動をとる確率を0とした確率の組
+
+---
+## ナッシュ均衡
+$x^{*} \in \tilde{\beta}(x^{*})$が成り立つとき，$x^{*}$をナッシュ均衡という．
+特に，$\tilde{\beta}(x^{*}) = \{x^{*}\}$が成り立つとき，$x^{*}$を強ナッシュ均衡という．
+
+- ナッシュ均衡
+    - 戦略プロファイル$x^{*} \in \Theta$が自分自身に対する最適反応になっている ($x^{*} \in \Theta$が$\tilde{\beta}$の不動点である)．
+    - すべてのエージェントにとって，その状況が実現されたら戦略を変える動機がないという点で合理的な解
+    - 有限ゲームでは必ず存在する (角谷の不動点定理より)
+
+- 強ナッシュ均衡
+    - 得られる戦略プロファイルは純粋戦略プロファイル
+    - 存在しない場合もある
+
+---
+## 例題1
+$$
+A = \left(\begin{array}{cc}
+    2 & -1 \\
+    -1 & 1
+\end{array}\right), \; \; 
+B = \left(\begin{array}{cc}
+    1 & -1 \\
+    -1 & 2
+\end{array}\right)
+$$
+
+で定義されるゲーム (男女の争い) のナッシュ均衡を求めよ．
+
+---
+## 例題1の解答例 (愚直にやる方法)
+エージェント2の混合戦略を$x_2 = (x_2^1, 1 - x_2^1)^{\mathrm{T}}$で固定したとき，エージェント1の純粋戦略の期待利得は，
+$$
+u_1(e_2^1, x_2) = (e_2^1, Ax_2) = 2x_2^1 - (1 - x_2^1) = 3x_2^1 - 1 \\
+u_1(e_2^2, x_2) = (e_2^2, Ax_2) = -x_2^1 + (1 - x_2^1) = -2x_2^1 + 1
+$$
+である．同様に，エージェント1の期待利得を$x_1 = (x_1^1, 1 - x_1^1)^{\mathrm{T}}$で固定したときのエージェント2の純粋戦略の期待利得は，
+$$
+u_2(x_1, e_2^1) = (x_1, Be_2^1) = x_1^1 - (1 - x_1^1) = 2x_1^1 - 1 \\
+u_2(x_1, e_2^2) = (x_1, Be_2^2) = -x_1^1 + 2(1 - x_1^1) = -3x_1^1 + 2
+$$
+である．
+
+---
+## 例題1の解答例 (愚直にやる方法)
+これより，
+$$
+u_1(e_2^2, x_2) - u_1(e_2^1, x_2) = -5x_2^1 + 2 \\
+u_2(x_1, e_2^2) - u_2(x_1, e_2^1) = -5x_1^1 + 3
+$$
+を得る．よって，エージェント1, 2の混合戦略最適反応対応は
+$$
+\beta_1(x) = \begin{cases}
+    \{e_2^1\} & \mathrm{if} \; \; x_2^1 > \frac{2}{5} \\
+    \Delta_1 & \mathrm{if} \; \; x_2^1 = \frac{2}{5} \\
+    \{e_2^2\} & \mathrm{if} \; \; x_2^1 < \frac{2}{5}
+\end{cases}, \; \; \beta_2(x) = \begin{cases}
+    \{e_2^1\} & \mathrm{if} \; \; x_1^1 > \frac{3}{5} \\
+    \Delta_2 & \mathrm{if} \; \; x_1^1 = \frac{3}{5} \\
+    \{e_2^2\} & \mathrm{if} \; \; x_1^1 < \frac{3}{5}
+\end{cases}
+$$
+である．
+
+---
+## 例題1の解答例 (愚直にやる方法)
+ナッシュ均衡の定義より，ナッシュ均衡$x^{*}$は，
+$$
+x^{*} \in \left\{(e_2^1, e_2^1), (e_2^2, e_2^2), \left( \left(\frac{3}{5}, \frac{2}{5} \right)^{\mathrm{T}}, \left(\frac{2}{5}, \frac{3}{5} \right)^{\mathrm{T}} \right) \right\}
+$$
+と求められる．
+
+![bg 50% left](./fig/nash_2.svg)
+
+---
+## ナッシュ均衡の集合の不変性
+ナッシュ均衡の集合を$\Theta^{NE}$とする．$\Theta^{NE}$は以下の操作に関して不変である．
+- 利得関数への正のアフィン変換
+- 利得関数の局所シフト
+
+正のアフィン変換: $\mu_i \in \mathbb{R}, \; \lambda_i \in \mathbb{R}_{++}$
+$$
+\forall x \in \Theta, \; \tilde{u}_i(x) = \lambda_i u_i(x) + \mu_i
+$$
+
+局所シフト: $\mu_i \in \mathbb{R}$
+$$
+\forall x \in \Theta, \; \tilde{u}_i(x) = \begin{cases}
+u_i(x) & \mathrm{if} \; \; x_{-i} \neq \bar{x}_{-i} \\
+u_i(x) + \mu_i & \mathrm{if} \; \; x_{-i} = \bar{x}_{-i}
+\end{cases}
+$$
+
+---
+## ナッシュ均衡の集合の不変性
+正のアフィン変換: $x_i^{*}, x_i \in \Delta_i, \; x \in \Theta$に対して，
+$$
+\tilde{u}_i(x_i^{*}, x_{-i}) - \tilde{u}_i(x_i, x_{-i}) = \lambda_i \left(u_i(x_i^{*}, x_{-i}) - u_i(x_i, x_{-i}) \right)
+$$
+
+局所シフト: $x_i^{*}, x_i \in \Delta_i, \; x \in \Theta$に対して，
+$$
+\tilde{u}_i(x_i^{*}, x_{-i}) - \tilde{u}_i(x_i, x_{-i}) = u_i(x_i^{*}, x_{-i}) - u_i(x_i, x_{-i})
+$$
+
+であるので，どちらの変換に対しても
+$$
+\tilde{u}_i(x_i^{*}, x_{-i}) \geq \tilde{u}_i(x_i, x_{-i}) \Leftrightarrow u_i(x_i^{*}, x_{-i}) \geq u_i(x_i, x_{-i})
+$$
+であるからナッシュ均衡の集合は不変である．
+
+---
+## 例題1に関して
+$$
+A = \left(\begin{array}{cc}
+    2 & -1 \\
+    -1 & 1
+\end{array}\right), \; \; 
+B = \left(\begin{array}{cc}
+    1 & -1 \\
+    -1 & 2
+\end{array}\right)
+$$
+を利得行列として持つゲームは，
+$$
+A^{\prime} = \left(\begin{array}{cc}
+    3 & 0 \\
+    0 & 2
+\end{array}\right), \; \; 
+B = \left(\begin{array}{cc}
+    2 & 0 \\
+    0 & 3
+\end{array}\right)
+$$
+を利得行列として持つゲームとナッシュ均衡の集合の観点では変わらない．
+- $A$について，1列目と2列目にそれぞれ1を加えても最適反応は変わらない．
+- $B$について，1行目と2行目にそれぞれ1を加えても最適反応は変わらない．
+
+$\Rightarrow$ 計算は楽になる．
+
+---
 ## 支配関係
+全ての$z \in \Theta$について$u_i(y_i, z_{-i}) \geq u_i(x_i, z_{-i})$が成り立ち，ある$z \in \Theta$については狭義の不等号が成り立つとき，戦略$y_i \in \Delta_i$が戦略$x_i \in \Delta_i$を弱支配するという．
+
+全ての$z \in \Theta$について，$u_i(y_i, z_{-i}) > u_i(x_i, z_{-i})$が成り立つとき，戦略$y_i \in \Delta_i$が戦略$x_i \in \Delta_i$を強支配するという．
+
+この定義から
+- 強支配される戦略は最適にはならない $\Rightarrow$ 戦略の反復消去 (自分 $\Rightarrow$ 相手 $\Rightarrow$ 自分 ... というようにする)
+- 弱支配される戦略は最適になることもあるが，唯一の最適反応とはならない
+
+---
+## 戦略の反復消去
+囚人のジレンマを例にする．
+$$
+A = \left(\begin{array}{cc}
+    4 & 0 \\
+    5 & 3
+\end{array}\right), \; \; 
+B = \left(\begin{array}{cc}
+    4 & 5 \\
+    0 & 3
+\end{array}\right)
+$$
+エージェント1の戦略2 (裏切り) は戦略1 (協力) を強支配している $\Rightarrow$ 戦略1を消去．
+$$
+A = \left(\begin{array}{cc}
+    5 & 3
+\end{array}\right), \; \; 
+B = \left(\begin{array}{cc}
+    0 & 3
+\end{array}\right)
+$$
+エージェント2の戦略2 (裏切り) は戦略1 (協力) を強支配している $\Rightarrow$ 戦略1を消去．
+$$
+A = \left(\begin{array}{c}
+    3
+\end{array}\right), \; \; 
+B = \left(\begin{array}{c}
+    3
+\end{array}\right)
+$$
+反復消去により，戦略プロファイルが1つだけ残る．このプロファイルは強ナッシュ均衡である．
+- お互い「協力」を選んだ方が利得は高いのに...というジレンマ．
+
+---
+## ナッシュ均衡の精緻化
+信憑性のないナッシュ均衡や壊れやすいナッシュ均衡を排除する (refineする)
+進化的基準と関係している
+
+- 完全性
+- プロパー性
+- 強完全性
+
+---
+
+## 摂動ゲーム
+完全性: エージェントの戦略の摂動に対して頑健でないナッシュ均衡を排除するもの
+
+ゲームを$G = (\mathcal{N}, \Theta, u)$とする．
+
+$\mu \in \{\mu \in \mathbb{R}_{++}^m \, | \, \forall i \in \mathcal{N}, \;\sum_{j \in S_i} \mu_i^j < 1 \}$: 誤差ベクトル $(m = \sum_{i \in \mathcal{N}} m_i)$ に対し
+
+$$
+\Theta(\mu) = \{x \in \Theta \, | \, \forall i \in \mathcal{N}, \; \forall j \in S_i, \; x_i^j \geq \mu_i^j \} \subset \Theta
+$$
+を定義する．混合戦略を$\Theta(\mu)$に制限したゲーム$G(\mu) = (\mathcal{N}, \Theta(\mu), u)$を$G$の摂動ゲームと呼ぶ．
+
+任意の摂動ゲーム$G(\mu)$は非空のナッシュ均衡の集合$\Theta^{NE}(\mu)$を持つ．
+
+---
+## 完全性
+ナッシュ均衡$x^{*} \in \Theta^{NE}$が完全であるとは，以下の条件を満たす摂動ゲームの列$\{G(\mu^t)\}_{\mu^t \to 0}$ が存在することをいう:
+1. $x^{t}$が$G(\mu^t)$のナッシュ均衡
+2. $x^{t} \to x^{*}$
+
+エージェントがある微小な確率で誤った戦略を選択しても，もとのゲームのナッシュ均衡に近い結果が実現されるってこと．
+
+- 任意の内部ナッシュ均衡は完全
+- 完全ナッシュ均衡の集合を$\Theta^{PE}$とすると，任意の有限ゲームに対して$\Theta^{PE} \neq \emptyset$ (完全ナッシュ均衡は必ず存在する)．
+- 任意の完全ナッシュ均衡$x^{*} \in \Theta^{PE}$は弱支配されない．2人ゲームでは逆も成立．
+
+---
+## $\varepsilon$-プロパー
+完全性の基準は摂動が合理的であるという条件は課していない．
+
+$x^{*} \in \Theta$が$\varepsilon$-プロパーであるとは，ある$\varepsilon > 0$を与えたときに
+$$
+\forall i \in \mathcal{N}, \; \forall j, k \in S_i, \; u_i(e_i^j, x_{-i}^{*}) < u_i(e_i^k, x_{-i}^{*}) \Rightarrow {x_i^j}^{*} \leq \varepsilon {x_i^k}^{*}
+$$
+が成り立つことをいう．
+$\Rightarrow$ 利得が小さい (= 損害が大きい) 戦略をとる確率が，利得が大きい戦略を取る確率の$\varepsilon$倍で抑えられる
+$\Rightarrow$ 損害が大きい誤りを警戒するように振る舞う
+
+- 任意の内部ナッシュ均衡は，任意の$\varepsilon > 0$に対して$\varepsilon$-プロパーである．
+
+c.f. ナッシュ均衡
+$$
+\forall i \in \mathcal{N}, \; \forall j, k \in S_i, \; u_i(e_i^j, x_{-i}^{*}) < u_i(e_i^k, x_{-i}^{*}) \Rightarrow {x_i^j}^{*} = 0
+$$
+
+---
+## プロパー性
+ナッシュ均衡$x^{*} \in \Theta^{NE}$がプロパーであるとは，ある列$\varepsilon^t \to 0$に対して，以下の条件を満たす列$\{x(\varepsilon^t)\}_{\varepsilon^t \to 0}$が存在することをいう:
+1. $x(\varepsilon^t)$が$\varepsilon^t$-プロパー
+2. $x(\varepsilon^t) \to x^{*}$
+
+損害に依存した微小な確率で誤った戦略を選んでも，もとのゲームのナッシュ均衡に近い結果が実現されるってこと．
+
+- 任意の内部ナッシュ均衡はプロパー
+- プロパーナッシュ均衡の集合を$\Theta^{PrE}$とすると，任意の有限ゲームにおいて$\Theta^{PrE} \neq \emptyset$ (プロパーナッシュ均衡は存在する)．
+- $x^{*} \in \Theta^{NE}$に対して，$x^{*} \in \Theta^{PrE} \Rightarrow x^{*} \in \Theta^{PE}$．
+
+---
+## 強完全性
+ナッシュ均衡$x^{*} \in \Theta^{NE}$が強完全であるとは，任意の摂動ゲームの列$\{G(\mu^t)\}_{\mu^t \to 0}$に対して以下が成り立つことをいう:
+1. $x^{t}$が$G(\mu^t)$のナッシュ均衡
+2. $x^{t} \to x^{*}$
+
+エージェントがどのような微小な確率で誤った戦略を選んでも，もとのゲームのナッシュ均衡に近い結果が実現されるってこと．
+
+- 任意の内部ナッシュ均衡は強完全
+- 強完全ナッシュ均衡は存在しない場合もある
+- 強ナッシュ均衡は強完全であり，一意のナッシュ均衡も強完全である．また，ナッシュ均衡が強完全ならばプロパーである．
+
+---
+## ナッシュ均衡に関連する集合の間の包含関係
+強ナッシュ均衡の集合を$\Theta^{SNE}$とし，強完全ナッシュ均衡の集合を$\Theta^{SPE}$とする．
+このとき，次の包含関係が成り立つ．
+$$
+\Theta^{SNE} \subseteq \Theta^{SPE} \subseteq \Theta^{PrE} \subseteq \Theta^{PE} \subseteq \Theta^{NE}
+$$
+
+このうち，$\Theta^{SNE}$と$\Theta^{SPE}$は空集合になり得るが，他は有限ゲームの場合は空集合にならない．
+
+---
+## 対称2人ゲーム
