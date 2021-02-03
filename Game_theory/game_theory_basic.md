@@ -69,7 +69,7 @@ $$
 ---
 ## 混合戦略の集合
 
-![bg 50% left](./fig/graph.svg)
+![bg 60% left](./fig/graph.svg)
 
 $S_i = \{1, 2\}$のとき，
 $$
@@ -224,7 +224,7 @@ x^{*} \in \left\{(e_2^1, e_2^1), (e_2^2, e_2^2), \left( \left(\frac{3}{5}, \frac
 $$
 と求められる．
 
-![bg 50% left](./fig/nash_2.svg)
+![bg 60% left](./fig/nash_2.svg)
 
 ---
 ## ナッシュ均衡の集合の不変性
@@ -428,3 +428,136 @@ $$
 
 ---
 ## 対称2人ゲーム
+ゲーム$G = (\mathcal{N}, S, U)$が対称2人ゲームであるとは，$\mathcal{N} = \{1, 2\}, S_1 = S_2,$かつ，$\forall (s_1, s_2) \in S, U_1(s_1, s_2) = U_2(s_2, s_1)$となるときをいう．
+
+$\Rightarrow$ 利得行列$A, B$に対して$B = A^{\mathrm{T}}$であるということ $(b_{ij} = a_{ji})$．
+
+例: 囚人のジレンマ
+$$
+A = \left(\begin{array}{cc}
+    4 & 0 \\
+    5 & 3
+\end{array}\right), \; \; 
+B = \left(\begin{array}{cc}
+    4 & 5 \\
+    0 & 3
+\end{array}\right)
+$$
+は，$B = A^{\mathrm{T}}$を満たすので，対称2人ゲームである．
+
+---
+## Notation
+次のnotationを用いる．
+- $K = \{1, 2, \ldots, k\}$: 純粋戦略の共通集合
+- $\Delta = \{x \, | \, \forall i \in K, \; x^i \geq 0, \; \sum_{j \in K} x^j = 1 \}$: 共通の混合戦略集合
+- $x \in \Delta$: 1人目のエージェントの混合戦略
+- $y \in \Delta$: 2人目のエージェントの混合戦略
+
+$\Rightarrow$ ある混合戦略$y \in \Delta$に対して，純粋戦略$i \in K$をとるときの利得は$u(e_k^i, y) = (e_k^i, Ay)$である．
+
+- $\beta^{*}: \Delta \to 2^{\Delta}$: 相手の戦略$y \in \Delta$に対する最適反応の集合
+$$
+\beta^{*}(y) = \{x \in \Delta \, | \, u(x, y) \geq u(x^{\prime}, y), \; \forall x^{\prime} \in \Delta \}
+$$
+
+$\Rightarrow$ $\tilde{\beta}_1(x, y) = \beta^{*}(y), \; \tilde{\beta}_2(x, y) = \beta^{*}(x)$
+
+---
+## 両対称
+対称2人ゲームが両対称であるとは，$A^{\mathrm{T}} = A$となるときをいう．
+
+つまり，$A, B$を利得行列としてもつゲームが両対称であるとは，$B = A^{\mathrm{T}}$かつ$A = A^{\mathrm{T}}$である．つまり，$B = A$である．
+$\Rightarrow$ $\forall x, y \in \Delta, \; u(x, y) = u(y, x)$
+
+---
+## 対称ナッシュ均衡
+対称ゲームでは，戦略プロファイル$(x, y) \in \Theta = \Delta^2$がナッシュ均衡$(x, y) \in \Theta^{NE}$となるためには，$x \in \beta^{*}(y)$かつ$y \in \beta^{*}(x)$であることが必要十分．
+
+ナッシュ均衡が対称であるとは，$(x, y) \in \Theta^{NE}$かつ$x = y$であることをいう．
+
+自分自身とのペアがナッシュ均衡となっている戦略の部分集合を
+$$
+\Delta^{NE} = \{x \in \Delta \, | \, (x, x) \in \Theta^{NE} \}
+$$
+と表す．
+
+- $\Theta^{NE} \subset \Theta$は最適反応対応$\beta^{*}: \Delta \to 2^{\Delta}$の不動点の集合
+- 任意の対称ゲームは少なくとも1つの対称ナッシュ均衡を持つ $(\Delta^{NE} \neq \emptyset)$
+
+---
+## 対称 $2 \times 2$ ゲームの分類
+
+利得行列
+$$
+A = \left(\begin{array}{cc}
+    a_{11} & a_{12} \\
+    a_{21} & a_{22}
+\end{array}\right), \; \; 
+A^{\prime} = \left(\begin{array}{cc}
+    a_1 & 0 \\
+    0 & a_2
+\end{array}\right)
+$$
+$(a_1 = a_{11} - a_{21}, a_2 = a_{22} - a_{12})$
+のゲームは対称 $2 \times 2$ ゲームは最適反応の観点で同値．
+
+$\Rightarrow$ 任意の対称 $2 \times 2$ ゲームはこの正規化によって平面上の点$a = (a_1, a_2) \in \mathbb{R}^2$と同一視できる．
+
+![bg 75% left](./fig/space.svg)
+
+---
+## カテゴリI
+
+$a_1 < 0, a_2 > 0$の任意のゲームにおいて，戦略2は戦略1を強支配する．
+$\Rightarrow$ $\Theta^{NE} = \{(e_2^2, e_2^2)\}$ かつ $\Delta^{NE} = \{e_2^2\}$．
+
+例: 囚人のジレンマ
+$$
+A = \left(\begin{array}{cc}
+    4 & 0 \\
+    5 & 3
+\end{array}\right)
+$$
+$\Rightarrow$ $a_1 = -1, a_2 = 3$
+
+カテゴリIVについては，$a_1$と$a_2$の立場を逆転させるとIと同一．
+$\Rightarrow$ $\Theta^{NE} = \{(e_2^1, e_2^1)\}$ かつ $\Delta^{NE} = \{e_2^1\}$．
+
+---
+## カテゴリII
+$a_1 > 0, a_2 > 0$のすべてのゲームは2つの対称強ナッシュ均衡$(e_2^1, e_2^1), (e_2^2, e_2^2)$を持つ．また，混合戦略
+$$
+\hat{x} = \lambda e_2^1 + (1 - \lambda) e_2^1 \in \Delta, \; \lambda = \frac{a_2}{a_1 + a_2}
+$$
+は自分自身とのペアがナッシュ均衡．
+$\Rightarrow$ $\Theta^{NE} = \{(e_2^1, e_2^1), (e_2^2, e_2^2), (\hat{x}, \hat{x}) \}$ かつ $\Delta^{NE} = \{e_2^1, e_2^2, \hat{x} \}$．
+
+例: 調整ゲーム
+$$
+A = \left(\begin{array}{cc}
+    2 & 0 \\
+    0 & 1
+\end{array}\right)
+$$
+
+---
+## カテゴリIII
+$a_1 < 0, a_2 < 0$のすべてのゲームは2つの非対称強ナッシュ均衡$(e_2^1, e_2^2), (e_2^2, e_2^1)$を持つ．また，前ページの混合戦略$\hat{x}$は自分自身とのペアがナッシュ均衡である．
+$\Rightarrow$ $\Theta^{NE} = \{(e_2^1, e_2^2), (e_2^2, e_2^1), (\hat{x}, \hat{x}) \}$ かつ $\Delta^{NE} = \{\hat{x} \}$．
+
+例: タカ-ハトゲーム
+$$
+A = \left(\begin{array}{cc}
+    (v - c)/2 & v \\
+    0 & v/2
+\end{array}\right)
+$$
+($v < c$を仮定)
+$\Rightarrow$ $a_1 = (v - c) / 2, a_2 = -v/2$
+
+---
+## まとめ
+- ゲーム理論は合理的な意思決定主体の間の戦略的な相互作用を記述する数学的モデル
+- ナッシュ均衡は全てのエージェントにとって「合理的な」ゲームの解
+- ナッシュ均衡の精緻化 (頑健でないナッシュ均衡を排除する)
+- 対称2人ゲーム
