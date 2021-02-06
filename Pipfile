@@ -17,6 +17,7 @@ sklearn = "*"
 pulp = "*"
 networkx = "*"
 ipython = "*"
+autograd = "*"
 
 [dev-packages]
 

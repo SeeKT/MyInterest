@@ -38,3 +38,9 @@ $$
 ## 進化的安定戦略とナッシュ均衡
 $\Delta^{ESS} \subset \Delta$を進化的安定戦略の集合とする．
 $x \in \Delta^{ESS}$ならば$x \in \beta^{*}(x)$である．つまり，$\Delta^{ESS} \subset \Delta^{NE}$である．
+
+また，$\Delta^{ESS}$について，
+$$
+\Delta^{ESS} = \{x \in \Delta^{NE} \, | \, u(y, y) < u(x, y), \; \forall y \in \beta^{*}(x), \; y \geq x \}
+$$
+が成り立つ．
