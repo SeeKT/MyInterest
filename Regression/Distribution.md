@@ -3,6 +3,7 @@
 ### 参考
 - 佐和，回帰分析 新装版，朝倉書店，2020．
 - 須山，ベイズ推論による機械学習 入門，講談社，2017．
+- 狩野，2021年度多変量解析 講義資料 (大阪大学 大学院基礎工学研究科)
 
 ## 確率分布の基本的事項
 #### 期待値 (平均)
@@ -28,10 +29,10 @@ $$
 - $\mathrm{Cov}(A\boldsymbol{X} + \boldsymbol{b}, C\boldsymbol{Y} + \boldsymbol{d}) = A \mathrm{Cov}(\boldsymbol{X}, \boldsymbol{Y}) C^{\mathrm{T}}$
 - $\mathrm{Var}(A\boldsymbol{X} + \boldsymbol{b}) = A \mathrm{Var}(\boldsymbol{X})A^{\mathrm{T}}$．
 - $\mathrm{Var}(\boldsymbol{X}) \geq O$
-- $\mathrm{Var}(\boldsymbol{X}) = O \Rightarrow \boldsymbol{X} = \mathbb{E}[\boldsymbol{X}] \; \; (w.p.1)$
+- $\mathrm{Var}(\boldsymbol{X}) = O \Rightarrow \boldsymbol{X} = \mathbb{E}[\boldsymbol{X}] \; \; (\mathrm{w.p. \;}1)$
 
 #### 確率変数の独立性
-$\boldsymbol{X}$: $p$次元確率変数，$\boldsymbol{y}$: $q$次元確率変数．$\forall B_1 \subset \mathbb{R}^p, \forall B_2 \subset \mathbb{R}^q$に対して，
+$\boldsymbol{X}$: $p$次元確率変数，$\boldsymbol{Y}$: $q$次元確率変数．$\forall B_1 \subset \mathbb{R}^p, \forall B_2 \subset \mathbb{R}^q$に対して，
 $$
 \mathbb{P}(\boldsymbol{X} \in B_1, \boldsymbol{Y} \in B_2) = \mathbb{P}(\boldsymbol{X} \in B_1) \mathbb{P}(\boldsymbol{Y} \in B_2)
 $$
@@ -92,14 +93,14 @@ $$
 が成立する．
 
 #### エントロピー
-確率分布$p(\boldsymbol{x})$に対して，
+確率密度関数$p(\boldsymbol{x})$に対して，
 $$
 H[p(\boldsymbol{x})] = - \int p(\boldsymbol{x}) \ln p(\boldsymbol{x}) d\boldsymbol{x} = -\mathbb{E}[\ln p(\boldsymbol{x})]
 $$
 をエントロピーと呼ぶ．エントロピーは確率分布の乱雑さを表す指標として知られている．
 
 #### KLダイバージェンス
-2つの確率分布$p(\boldsymbol{x})$および$q(\boldsymbol{x})$に対して，
+2つの確率密度関数$p(\boldsymbol{x})$および$q(\boldsymbol{x})$に対して，
 $$
 \mathrm{KL}[q(\boldsymbol{x}) \| p(\boldsymbol{x})] = -\int q(\boldsymbol{x}) \ln \frac{p(\boldsymbol{x})}{q(x)} d\boldsymbol{x} = \mathbb{E}_q[\ln q(\boldsymbol{x})] - \mathbb{E}_q[\ln p(\boldsymbol{x})]
 $$

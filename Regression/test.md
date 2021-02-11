@@ -1,5 +1,5 @@
 # aa
-```python {cmd="/home/toda/.local/share/virtualenvs/MyInterest-csCBqNJG/bin/python" matplotlib=true hide}
+```python {cmd="/home/toda/.local/share/virtualenvs/MyInterest-csCBqNJG/bin/python" matplotlib=true}
 import numpy as np
 import matplotlib.pyplot as plt
 x = np.arange(-10, 10, 0.01)
