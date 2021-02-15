@@ -359,3 +359,35 @@ $$
 このとき，$Q_i \; (i = 1, \ldots, n)$は互いに独立である．
 
 ## 確率変数の収束
+$\left\{\boldsymbol{X}_n = [X_1^{(n)}, \ldots, X_p^{(n)}]^{\mathrm{T}} \right\}$: $p$次元確率変数の列
+1. $\boldsymbol{a} \in \mathbb{R}^p$．$\forall \varepsilon > 0$に対して
+$$
+\lim_{n \to \infty} \mathbb{P}[\|\boldsymbol{X}_n - \boldsymbol{a}\| < \varepsilon] = 1
+$$
+が成り立つとき，$\boldsymbol{X}_n$は$\boldsymbol{a}$に確率収束するといい，$\boldsymbol{X}_n \overset{P}{\longrightarrow} \boldsymbol{a}$ $(n \to \infty)$と表す ($\|\boldsymbol{X}\| = \sqrt{\boldsymbol{X}^{\mathrm{T}}\boldsymbol{X}}$)．
+
+2. $\boldsymbol{X} = [X_1, \ldots, X_p]^{\mathrm{T}}$: $p$次元確率変数．
+$\mathbb{P}[X_k = x_k] = 0$なる任意の実数$x_k (k = 1, \ldots, p)$に対して，
+$$
+\lim_{n \to \infty} \mathbb{P}[X_1^{(n)} \leq x_1, \ldots, X_p^{(n)} \leq x_p] = \mathbb{P}[X_1 \leq x_1, \ldots, X_p \leq x_p]
+$$
+が成り立つとき，$\boldsymbol{X}_n$は$\boldsymbol{X}$に分布収束するといい，$\boldsymbol{X}_n \overset{d}{\longrightarrow} \boldsymbol{X}$ $(n \to \infty)$と表す．$F(\boldsymbol{x})$を$\boldsymbol{X}$の分布関数とするとき，分布収束を$\boldsymbol{X}_n \overset{d}{\longrightarrow} F(\boldsymbol{x})$と書くこともある．$F(\boldsymbol{x})$を分布名称(e.g. $N(0, 1)$)で置き換えることもある．
+
+- 分布関数列の収束先は分布関数とは限らない
+- 分布関数列が連続な分布関数に各点収束するならば，それは一様である．
+$$
+\lim_{n \to \infty} \sup_{x \in \mathbb{R}} |F_n(\boldsymbol{x}) - F(\boldsymbol{x})| = 0
+$$
+
+### 大数の法則と中心極限定理
+$\boldsymbol{X}_1, \ldots, \boldsymbol{X}_n$: 独立同一分布をもつ$p$次元確率変数．$\mathbb{E}[\boldsymbol{X}_i] = \boldsymbol{\mu}, \; \mathrm{Var}(\boldsymbol{X}_i) = \Sigma$
+$$
+\bar{\boldsymbol{X}}_n \coloneqq \frac{1}{n} \sum_{i = 1}^n \boldsymbol{X}_i
+$$
+とおく．
+1. $\mathbb{E}[\bar{\boldsymbol{X}}_n] = \boldsymbol{\mu}, \; \mathrm{Var}(\bar{\boldsymbol{X}}_n) = \frac{1}{n}\Sigma$
+2. (大数の法則) $\bar{\boldsymbol{X}}_n \overset{P}{\longrightarrow} \boldsymbol{\mu} \; (n \to \infty)$
+3. (中心極限定理)
+$$
+\sqrt{n} (\bar{\boldsymbol{X}}_n - \boldsymbol{\mu}) \overset{d}{\longrightarrow} N_p(\boldsymbol{0}, \Sigma) \; \; (n \to \infty)
+$$
