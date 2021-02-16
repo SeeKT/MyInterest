@@ -199,15 +199,44 @@ plt.show()
 ```
 $\hat{\beta}_0 = -34.67, \hat{\beta}_1 = 9.10$と求まり，それぞれの$t$-値は$-13.08, 21.72$である．つまり，係数の推定値$\hat{\beta}_0, \hat{\beta}_1$が棄却域に入るので，どの係数も有意に0より大きく，0とみなすことはできない．
 
+ここで，```print(regression_result.summary())```とすると，次のような標準出力を得る．
+```
+                            OLS Regression Results
+==============================================================================
+Dep. Variable:                  price   R-squared:                       0.484
+Model:                            OLS   Adj. R-squared:                  0.483
+Method:                 Least Squares   F-statistic:                     471.8
+Date:                Tue, 16 Feb 2021   Prob (F-statistic):           2.49e-74
+Time:                        19:48:44   Log-Likelihood:                -1673.1
+No. Observations:                 506   AIC:                             3350.
+Df Residuals:                     504   BIC:                             3359.
+Df Model:                           1
+Covariance Type:            nonrobust
+==============================================================================
+                 coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const        -34.6706      2.650    -13.084      0.000     -39.877     -29.465
+RM             9.1021      0.419     21.722      0.000       8.279       9.925
+==============================================================================
+Omnibus:                      102.585   Durbin-Watson:                   0.684
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              612.449
+Skew:                           0.726   Prob(JB):                    1.02e-133
+Kurtosis:                       8.190   Cond. No.                         58.4
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+```
+
 
 ## 重回帰分析
 確率変数$Y$の互いに独立な$n$個の観測値$y_1, \ldots, y_n$を得たとする．この観測値が，比較的少数個のある変数の変動によって説明されると仮定し，
 $$
 y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_p x_{ip} + \varepsilon_i \; \; (i = 1, \ldots, n)
 $$
-とする．ただし，$\varepsilon_1, \ldots, \varepsilon_n \overset{\text{i.i.d.}}{\sim} N(0, \sigma^2)$とする．
+とする．ただし，$\varepsilon_1, \ldots, \varepsilon_n \overset{\text{i.i.d.}}{\sim} \mathbb{E}[\varepsilon_i] = 0, \; \mathrm{Var}[\varepsilon_i] = \sigma^2$とする．
 これをベクトル表記で書き直す．
-- $\boldsymbol{y} = X \boldsymbol{\beta} + \boldsymbol{\varepsilon}, \; \; \boldsymbol{\varepsilon} \sim N_n(\boldsymbol{0}, \sigma^2I_n)$
+- $\boldsymbol{y} = X \boldsymbol{\beta} + \boldsymbol{\varepsilon}, \; \; \boldsymbol{\varepsilon} \sim \mathbb{E}[\boldsymbol{\varepsilon}] = \boldsymbol{0}, \; \mathrm{Var}[\boldsymbol{\varepsilon}] = \sigma^2I$
     $$
     X = \left[
         \begin{array}{cccc}
@@ -215,8 +244,163 @@ $$
         \vdots & \vdots & \ddots & \vdots \\
         1 & x_{n1} & \cdots & x_{np}
         \end{array}
-        \right]
+        \right], \; \boldsymbol{\beta} = \left[
+            \begin{array}{c}
+            \beta_0 \\
+            \beta_1 \\
+            \vdots \\
+            \beta_p
+            \end{array}
+            \right]
     $$
-- $\boldsymbol{y} \sim N_n(X\boldsymbol{\beta}, \sigma^2 I_n)$
+
 
 ここで，次の仮定をおく．
+- $\mathrm{rank}(X) = p + 1$
+    - このとき，$X^{\mathrm{T}}X$は$(p + 1)$次正則行列．
+
+中心化したモデル
+$$
+y_i = \beta_0^{\prime} + \beta_1(x_{i1} - \bar{x}_1) + \ldots, \beta_p(x_{ip} - \bar{x}_p) + \varepsilon_i
+$$
+を考える．ここで，
+$$
+X = [\boldsymbol{1}_n, X_1] = \left[
+    \begin{array}{cccc}
+    1 & x_{11} - \bar{x}_1 & \cdots & x_{1p} - \bar{x}_p \\
+    \vdots & \vdots & \cdots & \vdots \\
+    1 & x_{n1} - \bar{x}_1 & \cdots & x_{np} - \bar{x}_p
+    \end{array}
+    \right]
+$$
+とする．このとき，$\boldsymbol{1}_n$と$X_1$は直交している．よって，
+$$
+X^{\mathrm{T}}X = \left[
+    \begin{array}{c|c}
+    \boldsymbol{1}_n^{\mathrm{T}} \boldsymbol{1}_n & O \\ \hline
+    O & X_1^{\mathrm{T}}X_1
+    \end{array}
+    \right]
+$$
+であり，
+$$
+X(X^{\mathrm{T}}X)^{-1} X^{\mathrm{T}} = \boldsymbol{1}_n (\boldsymbol{1}_n^{\mathrm{T}}\boldsymbol{1}_n)^{-1}\boldsymbol{1}_n^{\mathrm{T}} + X_1(X_1^{\mathrm{T}}X_1)^{-1}X_1^{\mathrm{T}}
+$$
+となる．つまり，$\boldsymbol{1}_n$への直交射影と$X_1$への直交射影に分けられる．
+
+#### 最小二乗法
+与えられたデータ$(\boldsymbol{y}, \boldsymbol{X})$に基づいて回帰係数$\boldsymbol{\beta}$を推定する問題を考える．これは，
+$$
+\hat{\boldsymbol{\beta}} = \argmin_{\boldsymbol{\beta} \in \mathbb{R}^{p + 1}} \|\boldsymbol{y} - X \boldsymbol{\beta} \|^2
+$$
+となる$\hat{\boldsymbol{\beta}}$である．これはつまり，$\boldsymbol{\beta}$を$\boldsymbol{y}$の$\boldsymbol{X}$が張る空間への射影とすることなので，$\hat{\boldsymbol{\beta}}$は，
+$$
+\hat{\boldsymbol{\beta}} = (X^{\mathrm{T}}X)^{-1} X^{\mathrm{T}}\boldsymbol{y}
+$$
+である．$\boldsymbol{\beta}$を$\boldsymbol{\beta}$の最小二乗推定量という．ここで，$\boldsymbol{e} = \boldsymbol{y} - \hat{\boldsymbol{y}}$を残差という．
+
+上記と同じ結果を解析的に導くこともできる．誤差の2乗和は，
+$$
+\|\boldsymbol{\varepsilon}\|^2 = (\boldsymbol{y} - X \boldsymbol{\beta})^{\mathrm{T}} (\boldsymbol{y} - X \boldsymbol{\beta}) = \boldsymbol{y}^{\mathrm{T}}\boldsymbol{y} - 2 \boldsymbol{\beta}^{\mathrm{T}}X^{\mathrm{T}}\boldsymbol{y} + \boldsymbol{\beta}^{\mathrm{T}}(X^{\mathrm{T}}X)\boldsymbol{\beta}
+$$
+である．$\partial \|\boldsymbol{\varepsilon}\|^2 / \partial \boldsymbol{\beta} = \boldsymbol{0}$を解くと，
+$$
+-2 X^{\mathrm{T}}\boldsymbol{y} + 2X^{\mathrm{T}}X \boldsymbol{\beta} = \boldsymbol{0}
+$$
+より，
+$$
+(X^{\mathrm{T}}X)\boldsymbol{\beta} = X^{\mathrm{T}}\boldsymbol{y}
+$$
+(正規方程式) が得られる．仮定より$(X^{\mathrm{T}}X)$は正則であるから，この方程式には一意の解が存在し，$\boldsymbol{\beta} = \hat{\boldsymbol{\beta}}$で与えられる．
+
+残差は
+$$
+\boldsymbol{y} - X(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}\boldsymbol{y} = [I - X(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}]\boldsymbol{y}
+$$
+である．ここで，行列$I - X(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}$はべき等である．
+
+残差平方和$S_e$は，
+$$
+S_e = \|\boldsymbol{e}\|^2 = (\boldsymbol{y} - \hat{\boldsymbol{y}})^{\mathrm{T}}(\boldsymbol{y} - \hat{\boldsymbol{y}}) = \boldsymbol{y}^{\mathrm{T}} [I - X(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}]\boldsymbol{y}
+$$
+である．回帰変動$S_R$は，
+$$
+S_R = (\hat{\boldsymbol{y}} - \boldsymbol{1}_n \bar{\boldsymbol{y}})^{\mathrm{T}}(\hat{\boldsymbol{y}} - \boldsymbol{1}_n \bar{\boldsymbol{y}}) = \boldsymbol{y}^{\mathrm{T}} X_1 (X_1^{\mathrm{T}}X_1)^{-1}X_1^{\mathrm{T}}\boldsymbol{y} = \hat{\boldsymbol{\beta}}_1^{\mathrm{T}} X_1^{\mathrm{T}}X_1 \hat{\boldsymbol{\beta}}_1
+$$
+であり，総変動$S_T$は，
+$$
+S_T = (\boldsymbol{y} - \boldsymbol{1}_n \bar{\boldsymbol{y}})^{\mathrm{T}}(\boldsymbol{y} - \boldsymbol{1}_n \bar{\boldsymbol{y}}) = \boldsymbol{y}^{\mathrm{T}}\boldsymbol{y} - \boldsymbol{y}^{\mathrm{T}}\boldsymbol{1}_n (\boldsymbol{1}_n^{\mathrm{T}}\boldsymbol{1}_n)^{-1} \boldsymbol{1}_n^{\mathrm{T}}\boldsymbol{y}
+$$
+である．よって，
+$$
+S_T = S_R + S_e
+$$
+である．
+
+決定変数は，
+$$
+R^2 = \frac{S_R}{S_T} = 1 - \frac{S_e}{S_T}
+$$
+であり，自由度調整済み決定変数は
+$$
+{R^{*}}^2 = 1 - \frac{S_e/(n - p - 1)}{S_T / (n - 1)}
+$$
+である．これら2つは，値が大きいほどモデルの当てはまりが良い．
+
+#### 正規性の仮定
+$\varepsilon_1, \ldots, \varepsilon_n \overset{\text{i.i.d.}}{\sim} N(0, \sigma^2)$を仮定する．つまり，$\boldsymbol{\varepsilon} \sim N(\boldsymbol{0}, \sigma^2I)$である．
+これと，先ほどまでの仮定を合わせると，$\boldsymbol{y}$について，
+$$
+\boldsymbol{y} \sim N(X \boldsymbol{\beta}, \sigma^2 I), \; \mathrm{rank}(X) = p + 1
+$$
+となる．$\boldsymbol{\beta}$の推定量$\hat{\boldsymbol{\beta}}$について，
+$$
+\hat{\boldsymbol{\beta}} = (X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}\boldsymbol{y}
+$$
+より，$\hat{\boldsymbol{\beta}}$の分布について以下の性質が成り立つ．
+- $\hat{\boldsymbol{\beta}} \sim N_{p + 1}(\boldsymbol{\beta}, \sigma^2 (X^{\mathrm{T}}X)^{-1})$
+- $S_e \sim \sigma^2 \chi_{n - p - 1}^2$
+- $\hat{\sigma}^2 = S_e/(n - p - 1)$は$\sigma^2$の不偏推定量，つまり，$\mathbb{E}[\hat{\sigma}^2] = \sigma^2$
+- $\hat{\boldsymbol{\beta}}$と$S_e$は独立に分布
+    - 前者は平均に作用，後者はバラつきに作用
+- $S_R$と$S_e$は独立に分布
+- $\mathrm{Cov}\left((I_n - X(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}})\boldsymbol{y}, X^{\mathrm{T}}\boldsymbol{y}\right) = O$
+- $
+\left[
+    \begin{array}{c}
+        (I_n - X(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}})\boldsymbol{y} \\
+        X^{\mathrm{T}}\boldsymbol{y}
+    \end{array}
+    \right] = \left[
+    \begin{array}{c}
+        I_n - X(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}} \\
+        X^{\mathrm{T}}
+    \end{array}
+    \right]\boldsymbol{y}
+$ は多変量正規分布に従う．
+#### 推定量の検定
+$\boldsymbol{\beta} = [\beta_0, \boldsymbol{\beta}_1]^{\mathrm{T}}$とする．
+検定としては，主に次の2つがある．
+1. モデルの全体評価
+2. モデルの局所評価
+
+1について．$\beta_0$を除いたすべてについて評価する．つまり，帰無仮説$H_0$を$H_0: \boldsymbol{\beta}_1 = \boldsymbol{0}$とし，対立仮説$H_1$を，$H_1: \boldsymbol{\beta}_1 \neq \boldsymbol{0}$として
+$$
+F = \frac{S_R/p}{S_e/(n - p - 1)} \sim F_{n - p - 1}^p
+$$
+を検定する．
+
+2について．各$\beta_i$について評価する．帰無仮説$H_0$を$H_0: \beta_i = 0$とし，対立仮説$H_1$を，$H_1: \beta_i \neq 0$として，
+$$
+T = \frac{\hat{\beta}_i}{\sqrt{\hat{\sigma}^2 (X_1^{\mathrm{T}}X_1)^2}} \sim t_{n - p - 1}
+$$
+を検定する．
+
+
+#### 重回帰の実装
+Bostonの住宅価格に関するsklearnのデータセットを用いて重回帰分析を行う．
+ここでは，説明変数として住宅価格以外の全ての要素，目的変数を住宅価格(price)として重回帰分析を行う．
+
+単回帰分析と同様に，statsmodels.apiを用いて実装した．
+実装したものはGitHub Gistにアップロードしてある．
+(url: https://gist.github.com/SeeKT/c3363284fedede4257a376877cf28ef9)
