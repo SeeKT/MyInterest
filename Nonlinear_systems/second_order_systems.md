@@ -376,3 +376,79 @@ Saddleになっている平衡点には収束せず，Stable nodeとなってい
 
 
 ### Limit Cycles
+#### Oscillation (発振，振動)
+システムがnontrivialな周期解を持つとき，振動する．Nontrivialな周期解は，周期$T > 0$に対して，
+$$
+\boldsymbol{x}(t + T) = \boldsymbol{x}(t), \; \forall t \geq 0
+$$
+である．
+
+例: Linear (Harmonic) Oscillator
+$$
+\dot{\boldsymbol{z}} = \left[
+    \begin{array}{cc}
+    0 & -\beta \\
+    \beta & 0
+    \end{array}
+    \right]\boldsymbol{z}
+$$
+この解は，
+$$
+z_1(t) = r_0 \cos(\beta t + \theta_0), \; \; z_2(t) = r_0 \sin(\beta t + \theta_0)
+$$
+である．ただし，
+$$
+r_0 = \sqrt{z_1^2(0) + z_2^2(0)}, \; \; \theta_0 = \tan^{-1}\left[\frac{z_2(0)}{z_1(0)} \right]
+$$
+である．
+
+Linear oscillationは実用的ではない．
+- 初期状態の微小変化により解が変化する
+- $
+\left[
+    \begin{array}{cc}
+    \mu & \beta \\
+    -\beta & \mu
+    \end{array}
+    \right]
+$のような微小変化により，平衡点は
+- stable focus ($\mu < 0$)
+- unstable focus ($\mu > 0$)
+に変化．
+
+これと同様の問題がoscillation of nonlinear systemsにおいても起こる (e.g. pendulum wihtout friction)
+- center equilibriumの存在
+
+#### Limit Cycles
+例: Negative Resistance Oscillator
+システムは，
+$$
+\begin{cases}
+\dot{x}_1 = x_2 \\
+\dot{x}_2 = -x_1 - \varepsilon h^{\prime}(x_1) x_2
+\end{cases}
+$$
+である ($\varepsilon > 0$)．
+システムの唯一の平衡点は原点であり，Jacobi行列は，
+$$
+A = \left.\frac{\partial f}{\partial \boldsymbol{x}}\right|_{\boldsymbol{x} = \boldsymbol{0}} = \left[
+    \begin{array}{cc}
+    0 & 1 \\
+    -1 & -\varepsilon h^{\prime}(0)
+    \end{array}
+    \right]
+$$
+固有方程式は，
+$$
+\lambda^2 + \varepsilon h^{\prime}(0) \lambda + 1 = 0
+$$
+よって，$h^{\prime}(0) < 0$であれば，unstable focusまたはunstable node．
+
+例: Van der Pol Oscillator
+$h(x_1) = -x_1 + x_1^3/3$
+$$
+\begin{cases}
+\dot{x}_1 = x_2 \\
+\dot{x}_2 = -x_1 - \varepsilon (-1 + x_1^2) x_2
+\end{cases}
+$$
